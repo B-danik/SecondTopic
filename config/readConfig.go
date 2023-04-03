@@ -12,8 +12,9 @@ type Config struct {
 	PGusername string `env:"PGusername" envDefault:"postgre"`
 	PGpassword string `env:"PGpassword"`
 	PGhost     string `env:"PGhost" envDefault:"localhost"`
-	PGport     int    `env:"PGport" envDefault:"5433"`
+	PGport     int    `env:"PGport" envDefault:"5432"`
 	PGdbname   string `env:"PGdbname" envDefault:"postgre"`
+	PGsslmode  string `env:"PGsslmode" envDefault:"disable"`
 }
 
 func Read() (*Config, error) {

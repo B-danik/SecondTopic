@@ -7,25 +7,35 @@ import (
 	"os/signal"
 
 	"github.com/B-danik/SecondTopic/config"
+	"github.com/B-danik/SecondTopic/internal/database"
+	"github.com/B-danik/SecondTopic/internal/handlers"
+	"github.com/B-danik/SecondTopic/internal/servers"
+	service "github.com/B-danik/SecondTopic/pkg/handlers"
 )
 
 func main() {
-	log.Println("Stop application...", run())
+	log.Println("Stop application", run())
 }
 
 func run() error {
 	log.Println("Start application...")
+
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	grecefulShurdown(cancel)
-
-	config, err := config.Read()
+	con, err := config.Read()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	log.Println(config)
+	database.ConnectDB(con)
 
-	return ctx.Err()
+	svc, err := service.NewManager()
+
+	handler := handlers.NewManager(con, svc)
+
+	server := servers.NewServer(con, handler)
+
+	return server.StartServer(ctx)
 }
 
 func grecefulShurdown(c context.CancelFunc) {
