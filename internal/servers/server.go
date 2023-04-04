@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/B-danik/SecondTopic/config"
 	"github.com/B-danik/SecondTopic/internal/handlers"
@@ -24,13 +25,22 @@ func NewServer(cfg *config.Config, h *handlers.Manager) *Server {
 
 func (s *Server) StartServer(c context.Context) error {
 	log.Println("Start Server...")
-
 	s.App = s.EnableCors()
 	s.SetupRoutes()
+	go func() {
+		log.Println("Connect to port: ", fmt.Sprint(":", s.cfg.Port))
+		if err := s.App.Start(fmt.Sprint(":", s.cfg.Port)); err != nil && err != http.ErrServerClosed {
+			log.Fatal("Error connect: \n", err.Error())
+		}
+	}()
 
-	log.Println("Connect to port: ", fmt.Sprint(":", s.cfg.Port))
-	if err := s.App.Start(fmt.Sprint(":", s.cfg.Port)); err != nil && err != http.ErrServerClosed {
-		log.Fatal("listen:@{err}\n")
+	<-c.Done()
+	ctxShutdown, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer func() {
+		cancel()
+	}()
+	if err := s.App.Shutdown(ctxShutdown); err != nil {
+		log.Fatal("Server shutdown error: ", err.Error())
 	}
 	return nil
 }

@@ -6,10 +6,10 @@ import (
 )
 
 type Manager struct {
-	srv *service.Manager
+	srv *service.Service
 }
 
-func NewManager(con *config.Config, srv *service.Manager) *Manager {
+func NewManager(con *config.Config, srv *service.Service) *Manager {
 	return &Manager{
 		srv: srv,
 	}

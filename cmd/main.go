@@ -7,7 +7,7 @@ import (
 	"os/signal"
 
 	"github.com/B-danik/SecondTopic/config"
-	"github.com/B-danik/SecondTopic/internal/database"
+	database "github.com/B-danik/SecondTopic/internal/database/connect"
 	"github.com/B-danik/SecondTopic/internal/handlers"
 	"github.com/B-danik/SecondTopic/internal/servers"
 	service "github.com/B-danik/SecondTopic/pkg/handlers"
@@ -19,7 +19,6 @@ func main() {
 
 func run() error {
 	log.Println("Start application...")
-
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	grecefulShurdown(cancel)
@@ -29,7 +28,7 @@ func run() error {
 	}
 	database.ConnectDB(con)
 
-	svc, err := service.NewManager()
+	svc, err := service.NewService()
 
 	handler := handlers.NewManager(con, svc)
 

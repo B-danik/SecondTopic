@@ -1,14 +1,19 @@
 package service
 
-type IBook interface {
+type IUsers interface {
 	Get()
 	Create()
 }
 
-type Manager struct {
-	Book IBook
+type logUser struct {
+	Email    string `json:email`
+	Password string `json:password`
 }
 
-func NewManager() (*Manager, error) {
-	return &Manager{}, nil
+type Service struct {
+	User IUsers
+}
+
+func NewService() (*Service, error) {
+	return &Service{}, nil
 }
