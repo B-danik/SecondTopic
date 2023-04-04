@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 
 	"github.com/B-danik/SecondTopic/internal/database/CRUD/sql"
-	service "github.com/B-danik/SecondTopic/pkg/handlers"
 	"github.com/labstack/echo"
 )
 
@@ -17,7 +16,6 @@ type authUsers struct {
 }
 
 type BookService struct {
-	Repo service.Service
 }
 
 func New() (*BookService, error) {

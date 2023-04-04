@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/B-danik/SecondTopic/config"
-	"github.com/B-danik/SecondTopic/internal/handlers"
+	handlers "github.com/B-danik/SecondTopic/internal/handlers/manager"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )

@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"github.com/B-danik/SecondTopic/config"
-	service "github.com/B-danik/SecondTopic/pkg/handlers"
+	service "github.com/B-danik/SecondTopic/internal/handlers/service"
 )
 
 type Manager struct {

@@ -15,13 +15,6 @@ type logUser struct {
 	Password string `json:password`
 }
 
-type authUsers struct {
-	Name     string `json:name`
-	LastName string `json:lastname`
-	Email    string `json:email`
-	Password string `json:password`
-}
-
 func (s *Server) SetupRoutes() {
 	v1 := s.App.Group("/api/v1")
 

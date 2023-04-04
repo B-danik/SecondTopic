@@ -8,9 +8,9 @@ import (
 
 	"github.com/B-danik/SecondTopic/config"
 	database "github.com/B-danik/SecondTopic/internal/database/connect"
-	"github.com/B-danik/SecondTopic/internal/handlers"
+	handlers "github.com/B-danik/SecondTopic/internal/handlers/manager"
+	service "github.com/B-danik/SecondTopic/internal/handlers/service"
 	"github.com/B-danik/SecondTopic/internal/servers"
-	service "github.com/B-danik/SecondTopic/pkg/handlers"
 )
 
 func main() {
