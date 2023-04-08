@@ -7,7 +7,7 @@ import (
 	"os/signal"
 
 	"github.com/B-danik/SecondTopic/config"
-	database "github.com/B-danik/SecondTopic/internal/database/connect"
+	database "github.com/B-danik/SecondTopic/internal/database/postgre/connect"
 	handlers "github.com/B-danik/SecondTopic/internal/handlers/manager"
 	service "github.com/B-danik/SecondTopic/internal/handlers/service"
 	"github.com/B-danik/SecondTopic/internal/servers"

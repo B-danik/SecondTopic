@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/B-danik/SecondTopic/internal/database/CRUD/sql"
+	"github.com/B-danik/SecondTopic/internal/database/postgre/CRUD/sql"
 	"github.com/labstack/echo"
 )
 
