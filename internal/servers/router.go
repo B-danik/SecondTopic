@@ -11,66 +11,52 @@ import (
 )
 
 func (s *Server) SetupRoutes() {
-	v1 := s.App.Group("/api/v1")
-
-	s.App.GET("/users", func(c echo.Context) error {
-
-		return c.NoContent(http.StatusOK)
-	})
-
-	s.App.GET("/hello", func(c echo.Context) error {
-		return c.NoContent(http.StatusOK)
-	})
-
-	s.App.POST("/login", s.loginUser)
-
-	s.App.POST("/auth", s.authUser)
-
-	v1.GET("/hello", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, "Hello world")
-	})
+	auth := s.App.Group("/auth")
+	{
+		auth.POST("/sign-up", s.signUp)
+		auth.POST("/sign-in", s.signIn)
+	}
 }
 
-func (s *Server) loginUser(c echo.Context) error {
-	var user todo.User
-	defer c.Request().Body.Close()
-	b, err := ioutil.ReadAll(c.Request().Body)
-	if err != nil {
-		return nil
-	}
-	err = json.Unmarshal(b, &user)
-	if err != nil {
-		return nil
-	}
-	log.Print(user)
-	// id, err := service.IAuthorization.CreateUser(user{})
-	// if err != nil {
-	// 	return nil
-	// }
-	// c.JSON(http.StatusOK, map[string]interface{}{
-	// 	"id": id,
-	// })
-	return c.NoContent(http.StatusOK)
-}
-
-func (s *Server) authUser(c echo.Context) error {
+func (s *Server) signUp(c echo.Context) error {
 	var user todo.User
 	b, err := ioutil.ReadAll(c.Request().Body)
 	if err != nil {
-		return nil
+		return c.NoContent(http.StatusNotFound)
 	}
 	err = json.Unmarshal(b, &user)
 	if err != nil {
-		return nil
+		return c.NoContent(http.StatusNotFound)
 	}
 	log.Print(user)
 
 	id, err := s.services.Authorization.CreateUser(user)
 	if err != nil {
-		return nil
+		return c.NoContent(http.StatusNotFound)
 	}
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
+	})
+	return c.NoContent(http.StatusOK)
+}
+
+func (s *Server) signIn(c echo.Context) error {
+	var user todo.User
+	b, err := ioutil.ReadAll(c.Request().Body)
+	if err != nil {
+		return nil
+	}
+	err = json.Unmarshal(b, &user)
+	if err != nil {
+		return nil
+	}
+	token, err := s.services.Authorization.GenerateToken(user.Email, user.Password)
+	if err != nil {
+		return c.NoContent(http.StatusNotFound)
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"token": token,
 	})
 	return c.NoContent(http.StatusOK)
 }

@@ -13,7 +13,7 @@ type AuthPostgre struct {
 }
 
 const (
-	usersTable      = "users"
+	usersTable = "users"
 )
 
 func NewAuthPostgres(db *sqlx.DB) *AuthPostgre {
@@ -30,4 +30,12 @@ func (p *AuthPostgre) CreateUser(user todo.User) (int, error) {
 	}
 
 	return id, nil
+}
+
+func (p *AuthPostgre) GetUser(email, password string) (todo.User, error) {
+	var user todo.User
+	query := fmt.Sprintf("SELECT id FROM %s WHERE email=$1 AND password_hash=$2", usersTable)
+	err := p.db.Get(&user, query, email, password)
+
+	return user, err
 }

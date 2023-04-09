@@ -8,6 +8,7 @@ import (
 
 type IAuthorization interface {
 	CreateUser(user todo.User) (int, error)
+	GetUser(email, password string) (todo.User, error)
 }
 
 type Repository struct {
