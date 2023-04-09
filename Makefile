@@ -5,6 +5,6 @@ createMigrate:
 createDB:
 	docker exec -it caf4ccb71783 /bin/bash
 migrateUp:
-	migrate -path ./schema -database 'postgres://postgres:D112233Diss@localhost:5432/postgres?sslmode=disable' up
+	migrate -path ./internal/database/postgre/schema -database 'postgres://postgres:D112233Diss@localhost:5432/postgres?sslmode=disable' up
 migrateDown:
-	migrate -path ./schema -database 'postgres://postgres:D112233Diss@localhost:5432/postgres?sslmode=disable' down	
+	migrate -path ./internal/database/postgre/schema -database 'postgres://postgres:D112233Diss@localhost:5432/postgres?sslmode=disable' down	

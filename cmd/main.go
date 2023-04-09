@@ -7,6 +7,7 @@ import (
 	"os/signal"
 
 	"github.com/B-danik/SecondTopic/config"
+	repository "github.com/B-danik/SecondTopic/internal/database/postgre"
 	database "github.com/B-danik/SecondTopic/internal/database/postgre/connect"
 	handlers "github.com/B-danik/SecondTopic/internal/handlers/manager"
 	service "github.com/B-danik/SecondTopic/internal/handlers/service"
@@ -26,13 +27,19 @@ func run() error {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	database.ConnectDB(con)
 
-	svc, err := service.NewService()
+	db, err := database.NewPostgresDB(con)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	repos := repository.NewRepository(db)
+
+	svc := service.NewService(repos)
 
 	handler := handlers.NewManager(con, svc)
 
-	server := servers.NewServer(con, handler)
+	server := servers.NewServer(con, handler, svc)
 
 	return server.StartServer(ctx)
 }

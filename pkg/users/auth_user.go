@@ -1,48 +1,31 @@
 package users
 
 import (
-	"encoding/json"
-	"io/ioutil"
+	"crypto/sha1"
+	"fmt"
 
-	"github.com/B-danik/SecondTopic/internal/database/postgre/CRUD/sql"
-	"github.com/labstack/echo"
+	repository "github.com/B-danik/SecondTopic/internal/database/postgre"
+	"github.com/B-danik/SecondTopic/todo"
 )
 
-type authUsers struct {
-	Name     string `json:name`
-	LastName string `json:lastname`
-	Email    string `json:email`
-	Password string `json:password`
+const salt = "tedsa1235das"
+
+type AuthService struct {
+	repo repository.IAuthorization
 }
 
-type BookService struct {
+func NewAuthService(repo repository.IAuthorization) *AuthService {
+	return &AuthService{repo: repo}
 }
 
-func New() (*BookService, error) {
-	return &BookService{}, nil
+func (a *AuthService) CreateUser(user todo.User) (int, error) {
+	user.Password = generatePasswordHash(user.Password)
+	return a.repo.CreateUser(user)
 }
 
-func (b *BookService) Get(c echo.Context) (string, error) {
+func generatePasswordHash(password string) string {
+	hash := sha1.New()
+	hash.Write([]byte(password))
 
-	users, err := sql.ReadFile("xxx@mail.ru")
-	if err != nil {
-		return "", nil
-	}
-	return users, nil
-}
-
-func (b *BookService) Create(c echo.Context) error {
-	user := authUsers{}
-	defer c.Request().Body.Close()
-	read, err := ioutil.ReadAll(c.Request().Body)
-	if err != nil {
-		return nil
-	}
-	err = json.Unmarshal(read, &user)
-	if err != nil {
-		return nil
-	}
-	sql := sql.NewFile(user.Name, user.LastName, user.Email, user.Password)
-	sql.CreateFile()
-	return nil
+	return fmt.Sprintf("%x", hash.Sum([]byte(salt)))
 }

@@ -1,19 +1,21 @@
 package service
 
-type IUsers interface {
-	Get()
-	Create()
-}
+import (
+	repository "github.com/B-danik/SecondTopic/internal/database/postgre"
+	users "github.com/B-danik/SecondTopic/pkg/users"
+	"github.com/B-danik/SecondTopic/todo"
+)
 
-type logUser struct {
-	Email    string `json:email`
-	Password string `json:password`
+type Authorization interface {
+	CreateUser(user todo.User) (int, error)
 }
 
 type Service struct {
-	User IUsers
+	Authorization
 }
 
-func NewService() (*Service, error) {
-	return &Service{}, nil
+func NewService(repo *repository.Repository) *Service {
+	return &Service{
+		Authorization: users.NewAuthService(repo.Authorization),
+	}
 }

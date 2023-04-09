@@ -6,25 +6,15 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/B-danik/SecondTopic/pkg/users"
+	"github.com/B-danik/SecondTopic/todo"
 	"github.com/labstack/echo"
 )
-
-type logUser struct {
-	Email    string `json:"email`
-	Password string `json:password`
-}
 
 func (s *Server) SetupRoutes() {
 	v1 := s.App.Group("/api/v1")
 
 	s.App.GET("/users", func(c echo.Context) error {
-		user, err := users.New()
-		if err != nil {
-			return nil
-		}
-		read, err := user.Get(c)
-		log.Print(read)
+
 		return c.NoContent(http.StatusOK)
 	})
 
@@ -32,17 +22,17 @@ func (s *Server) SetupRoutes() {
 		return c.NoContent(http.StatusOK)
 	})
 
-	s.App.POST("/login", loginUser)
+	s.App.POST("/login", s.loginUser)
 
-	s.App.POST("/auth", authUser)
+	s.App.POST("/auth", s.authUser)
 
 	v1.GET("/hello", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, "Hello world")
 	})
 }
 
-func loginUser(c echo.Context) error {
-	user := logUser{}
+func (s *Server) loginUser(c echo.Context) error {
+	var user todo.User
 	defer c.Request().Body.Close()
 	b, err := ioutil.ReadAll(c.Request().Body)
 	if err != nil {
@@ -53,14 +43,34 @@ func loginUser(c echo.Context) error {
 		return nil
 	}
 	log.Print(user)
+	// id, err := service.IAuthorization.CreateUser(user{})
+	// if err != nil {
+	// 	return nil
+	// }
+	// c.JSON(http.StatusOK, map[string]interface{}{
+	// 	"id": id,
+	// })
 	return c.NoContent(http.StatusOK)
 }
 
-func authUser(c echo.Context) error {
-	user, err := users.New()
+func (s *Server) authUser(c echo.Context) error {
+	var user todo.User
+	b, err := ioutil.ReadAll(c.Request().Body)
 	if err != nil {
 		return nil
 	}
-	user.Create(c)
+	err = json.Unmarshal(b, &user)
+	if err != nil {
+		return nil
+	}
+	log.Print(user)
+
+	id, err := s.services.Authorization.CreateUser(user)
+	if err != nil {
+		return nil
+	}
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": id,
+	})
 	return c.NoContent(http.StatusOK)
 }

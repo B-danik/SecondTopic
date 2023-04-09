@@ -9,18 +9,20 @@ import (
 
 	"github.com/B-danik/SecondTopic/config"
 	handlers "github.com/B-danik/SecondTopic/internal/handlers/manager"
+	service "github.com/B-danik/SecondTopic/internal/handlers/service"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
 
 type Server struct {
-	cfg     *config.Config
-	App     *echo.Echo
-	handler *handlers.Manager
+	cfg      *config.Config
+	App      *echo.Echo
+	handler  *handlers.Manager
+	services *service.Service
 }
 
-func NewServer(cfg *config.Config, h *handlers.Manager) *Server {
-	return &Server{cfg: cfg, handler: h}
+func NewServer(cfg *config.Config, h *handlers.Manager, s *service.Service) *Server {
+	return &Server{cfg: cfg, handler: h, services: s}
 }
 
 func (s *Server) StartServer(c context.Context) error {
