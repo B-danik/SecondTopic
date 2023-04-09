@@ -26,7 +26,6 @@ func NewServer(cfg *config.Config, h *handlers.Manager, s *service.Service) *Ser
 }
 
 func (s *Server) StartServer(c context.Context) error {
-	fmt.Printf("s.handler: %v\n", s.handler)
 	log.Println("Start Server...")
 	s.App = s.EnableCors()
 	s.SetupRoutes()

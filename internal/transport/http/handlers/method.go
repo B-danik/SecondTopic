@@ -9,12 +9,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-const (
-	authorizationHeader = "Authorization"
-	userCtx             = "userId"
-)
-
-func (h *Manager) signUp(c echo.Context) error {
+func (m *Manager) CreateUser(c echo.Context) error {
 	var user todo.User
 	b, err := ioutil.ReadAll(c.Request().Body)
 	if err != nil {
@@ -25,7 +20,7 @@ func (h *Manager) signUp(c echo.Context) error {
 		return c.NoContent(http.StatusNotFound)
 	}
 
-	id, err := h.srv.CreateUser(user)
+	id, err := m.srv.CreateUser(user)
 	if err != nil {
 		return c.NoContent(http.StatusNotFound)
 	}
@@ -35,7 +30,40 @@ func (h *Manager) signUp(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
-func (m *Manager) signIn(c echo.Context) error {
+func (m Manager) CreateUser1(c echo.Context) error {
+	var user todo.User
+	if err := c.Bind(&user); err != nil {
+		return err
+	}
+	token, err := m.srv.Authorization.GenerateToken(user.Email, user.Password)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err)
+	}
+	return c.JSON(http.StatusOK, token)
+}
+
+func (m Manager) signUp(c echo.Context) error {
+	var user todo.User
+	b, err := ioutil.ReadAll(c.Request().Body)
+	if err != nil {
+		return c.NoContent(http.StatusNotFound)
+	}
+	err = json.Unmarshal(b, &user)
+	if err != nil {
+		return c.NoContent(http.StatusNotFound)
+	}
+
+	id, err := m.srv.CreateUser(user)
+	if err != nil {
+		return c.NoContent(http.StatusNotFound)
+	}
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": id,
+	})
+	return c.NoContent(http.StatusOK)
+}
+
+func (m Manager) signIn(c echo.Context) error {
 	var user todo.User
 	b, err := ioutil.ReadAll(c.Request().Body)
 	if err != nil {

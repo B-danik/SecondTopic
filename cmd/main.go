@@ -37,9 +37,9 @@ func run() error {
 
 	svc := service.NewService(repos)
 
-	handler := handlers.NewManager(con, svc)
+	manager := handlers.NewManager(svc)
 
-	server := servers.NewServer(con, handler, svc)
+	server := servers.NewServer(con, manager, svc)
 
 	return server.StartServer(ctx)
 }
