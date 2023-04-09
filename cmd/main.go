@@ -9,9 +9,9 @@ import (
 	"github.com/B-danik/SecondTopic/config"
 	repository "github.com/B-danik/SecondTopic/internal/database/postgre"
 	database "github.com/B-danik/SecondTopic/internal/database/postgre/connect"
-	handlers "github.com/B-danik/SecondTopic/internal/handlers/manager"
-	service "github.com/B-danik/SecondTopic/internal/handlers/service"
-	"github.com/B-danik/SecondTopic/internal/servers"
+	servers "github.com/B-danik/SecondTopic/internal/transport/http"
+	"github.com/B-danik/SecondTopic/internal/transport/http/handlers"
+	"github.com/B-danik/SecondTopic/pkg/service"
 )
 
 func main() {

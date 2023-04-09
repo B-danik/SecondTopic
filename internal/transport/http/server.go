@@ -1,4 +1,4 @@
-package servers
+package http
 
 import (
 	"context"
@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/B-danik/SecondTopic/config"
-	handlers "github.com/B-danik/SecondTopic/internal/handlers/manager"
-	service "github.com/B-danik/SecondTopic/internal/handlers/service"
+	handlers "github.com/B-danik/SecondTopic/internal/transport/http/handlers"
+	"github.com/B-danik/SecondTopic/pkg/service"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -26,6 +26,7 @@ func NewServer(cfg *config.Config, h *handlers.Manager, s *service.Service) *Ser
 }
 
 func (s *Server) StartServer(c context.Context) error {
+	fmt.Printf("s.handler: %v\n", s.handler)
 	log.Println("Start Server...")
 	s.App = s.EnableCors()
 	s.SetupRoutes()
