@@ -8,7 +8,8 @@ import (
 )
 
 type Config struct {
-	Port       int    `env:"PORT" envDefault:"3000"`
+	Port int `env:"PORT" envDefault:"3000"`
+
 	PGusername string `env:"PGusername" envDefault:"postgre"`
 	PGpassword string `env:"PGpassword"`
 	PGhost     string `env:"PGhost" envDefault:"localhost"`

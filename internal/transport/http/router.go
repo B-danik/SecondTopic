@@ -12,7 +12,7 @@ func (s *Server) SetupRoutes() {
 	{
 		list := api.Group("/lists")
 		{
-			list.POST("/", s.handler.UserIdentity)
+			list.POST("/Create", s.handler.CreateBook)
 		}
 	}
 

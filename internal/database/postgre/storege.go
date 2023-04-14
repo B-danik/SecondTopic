@@ -1,7 +1,7 @@
 package repository
 
 import (
-	authUser "github.com/B-danik/SecondTopic/internal/database/postgre/sql"
+	sql "github.com/B-danik/SecondTopic/internal/database/postgre/sql"
 	"github.com/B-danik/SecondTopic/todo"
 	"github.com/jmoiron/sqlx"
 )
@@ -11,12 +11,19 @@ type IAuthorization interface {
 	GetUser(email, password string) (todo.User, error)
 }
 
+type IBook interface {
+	CreateBook(name string) (int, error)
+	GetBook()
+}
+
 type Repository struct {
 	Authorization IAuthorization
+	Book          IBook
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		Authorization: authUser.NewAuthPostgres(db),
+		Authorization: sql.NewAuthPostgres(db),
+		Book:          sql.NewBook(db),
 	}
 }
