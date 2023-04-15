@@ -7,13 +7,15 @@ import (
 )
 
 type IAuthorization interface {
-	CreateUser(user todo.User) (int, error)
-	GetUser(email, password string) (todo.User, error)
+	Create(user todo.User) (int, error)
+	Get(email, password string) (todo.User, error)
 }
 
 type IBook interface {
-	CreateBook(name string) (int, error)
-	GetBook()
+	Create(name string) (int, error)
+	Get(ID int) (todo.Book, error)
+	GetAll() ([]todo.Book, error)
+	Delete(ID int) error
 }
 
 type Repository struct {

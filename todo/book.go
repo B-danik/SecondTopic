@@ -1,6 +1,6 @@
 package todo
 
 type Book struct {
-	ID   int
+	Id   int
 	Name string
 }

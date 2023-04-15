@@ -20,7 +20,8 @@ func (m *Manager) SignUp(c echo.Context) error {
 		return c.NoContent(http.StatusNotFound)
 	}
 
-	id, err := m.srv.CreateUser(user)
+	id, err := m.srv.Authorization.Create(user)
+
 	if err != nil {
 		return c.NoContent(http.StatusNotFound)
 	}

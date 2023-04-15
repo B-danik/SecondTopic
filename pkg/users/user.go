@@ -29,13 +29,13 @@ func NewAuthService(repo repository.IAuthorization) *AuthService {
 	return &AuthService{repo: repo}
 }
 
-func (a *AuthService) CreateUser(user todo.User) (int, error) {
+func (a *AuthService) Create(user todo.User) (int, error) {
 	user.Password = generatePasswordHash(user.Password)
-	return a.repo.CreateUser(user)
+	return a.repo.Create(user)
 }
 
 func (s *AuthService) GenerateToken(email, password string) (string, error) {
-	user, err := s.repo.GetUser(email, generatePasswordHash(password))
+	user, err := s.repo.Get(email, generatePasswordHash(password))
 	if err != nil {
 		return "", err
 	}

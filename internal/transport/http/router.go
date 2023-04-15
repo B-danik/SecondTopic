@@ -10,10 +10,12 @@ func (s *Server) SetupRoutes() {
 
 	api := s.App.Group("/api")
 	{
-		list := api.Group("/lists")
+		book := api.Group("/books")
 		{
-			list.POST("/Create", s.handler.CreateBook)
+			book.POST("/create", s.handler.CreateBook)
+			book.GET("/get-book", s.handler.GetBook)
+			book.GET("/get-all", s.handler.GetAll)
+			book.DELETE("/delete", s.handler.Delete)
 		}
 	}
-
 }

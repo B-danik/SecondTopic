@@ -3,6 +3,7 @@ package sql
 import (
 	"fmt"
 
+	"github.com/B-danik/SecondTopic/todo"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -18,7 +19,12 @@ func NewBook(db *sqlx.DB) *Book {
 	return &Book{db: db}
 }
 
-func (b *Book) CreateBook(name string) (int, error) {
+type Book1 struct {
+	id   int
+	name string
+}
+
+func (b *Book) Create(name string) (int, error) {
 	var id int
 	query := fmt.Sprintf("INSERT INTO %s (name) values ($1) RETURNING id", bookTable)
 
@@ -30,6 +36,33 @@ func (b *Book) CreateBook(name string) (int, error) {
 	return id, nil
 }
 
-func (b *Book) GetBook() {
+func (b *Book) Get(ID int) (todo.Book, error) {
 
+	var book todo.Book
+	query := fmt.Sprintf("Select * from %s where id = $1", bookTable)
+
+	err := b.db.Get(&book, query, ID)
+
+	fmt.Print(book)
+	return book, err
+}
+
+func (b *Book) GetAll() ([]todo.Book, error) {
+
+	var book []todo.Book
+	query := fmt.Sprintf("Select * from %s", bookTable)
+
+	err := b.db.Select(&book, query)
+
+	return book, err
+}
+
+func (b *Book) Delete(ID int) error {
+
+	query := fmt.Sprintf("Delete from %s where id = $1", bookTable)
+
+	book, err := b.db.Exec(query, ID)
+
+	fmt.Print(book)
+	return err
 }

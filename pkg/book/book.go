@@ -2,6 +2,7 @@ package book
 
 import (
 	repository "github.com/B-danik/SecondTopic/internal/database/postgre"
+	"github.com/B-danik/SecondTopic/todo"
 )
 
 type BookService struct {
@@ -12,12 +13,19 @@ func NewBook(repo repository.IBook) *BookService {
 	return &BookService{repo: repo}
 }
 
-func (b *BookService) CreateBook(name string) (int, error) {
-	b.repo.CreateBook(name)
-	return 0, nil
+func (b *BookService) Create(name string) (int, error) {
+	return b.repo.Create(name)
 
 }
 
-func (b *BookService) GetBook() {
+func (b *BookService) Get(ID int) (todo.Book, error) {
+	return b.repo.Get(ID)
+}
 
+func (b *BookService) GetAll() ([]todo.Book, error) {
+	return b.repo.GetAll()
+}
+
+func (b *BookService) Delete(ID int) error {
+	return b.repo.Delete(ID)
 }

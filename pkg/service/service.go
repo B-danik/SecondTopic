@@ -8,14 +8,16 @@ import (
 )
 
 type Authorization interface {
-	CreateUser(user todo.User) (int, error)
+	Create(user todo.User) (int, error)
 	GenerateToken(username, password string) (string, error)
 	ParseToken(accessToken string) (int, error)
 }
 
 type Book interface {
-	CreateBook(name string) (int, error)
-	GetBook()
+	Create(name string) (int, error)
+	Get(ID int) (todo.Book, error)
+	GetAll() ([]todo.Book, error)
+	Delete(ID int) error
 }
 
 type Service struct {
