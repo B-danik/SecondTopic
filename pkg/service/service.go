@@ -3,6 +3,7 @@ package service
 import (
 	repository "github.com/B-danik/SecondTopic/internal/database/postgre"
 	"github.com/B-danik/SecondTopic/pkg/book"
+	"github.com/B-danik/SecondTopic/pkg/transactions"
 	users "github.com/B-danik/SecondTopic/pkg/users"
 	"github.com/B-danik/SecondTopic/todo"
 )
@@ -20,14 +21,19 @@ type Book interface {
 	Delete(ID int) error
 }
 
+type Transactions interface {
+}
+
 type Service struct {
 	Authorization
 	Book
+	Transactions
 }
 
 func NewService(repo *repository.Repository) *Service {
 	return &Service{
 		Authorization: users.NewAuthService(repo.Authorization),
 		Book:          book.NewBook(repo.Book),
+		Transactions:  transactions.NewBook(repo.Transactions),
 	}
 }

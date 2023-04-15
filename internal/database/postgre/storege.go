@@ -18,14 +18,19 @@ type IBook interface {
 	Delete(ID int) error
 }
 
+type ITransactions interface {
+}
+
 type Repository struct {
 	Authorization IAuthorization
 	Book          IBook
+	Transactions  ITransactions
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: sql.NewAuthPostgres(db),
 		Book:          sql.NewBook(db),
+		Transactions:  sql.NewTransactions(db),
 	}
 }

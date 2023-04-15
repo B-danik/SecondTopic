@@ -10,10 +10,6 @@ import (
 )
 
 func (m *Manager) CreateBook(c echo.Context) error {
-	check, err := m.UserIdentity(c)
-	if err != nil && check != true {
-		return err
-	}
 
 	var book todo.Book
 	b, err := ioutil.ReadAll(c.Request().Body)
@@ -36,10 +32,6 @@ func (m *Manager) CreateBook(c echo.Context) error {
 }
 
 func (m *Manager) GetBook(c echo.Context) error {
-	check, err := m.UserIdentity(c)
-	if err != nil && check != true {
-		return err
-	}
 
 	var book todo.Book
 	b, err := ioutil.ReadAll(c.Request().Body)
@@ -57,15 +49,11 @@ func (m *Manager) GetBook(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"list": list,
+		"book": list,
 	})
 }
 
 func (m *Manager) GetAll(c echo.Context) error {
-	check, err := m.UserIdentity(c)
-	if err != nil && check != true {
-		return err
-	}
 
 	list, err := m.srv.Book.GetAll()
 	if err != nil {
@@ -77,11 +65,7 @@ func (m *Manager) GetAll(c echo.Context) error {
 	})
 }
 
-func (m *Manager) Delete(c echo.Context) error {
-	check, err := m.UserIdentity(c)
-	if err != nil && check != true {
-		return err
-	}
+func (m *Manager) DeleteBook(c echo.Context) error {
 
 	var book todo.Book
 	b, err := ioutil.ReadAll(c.Request().Body)
