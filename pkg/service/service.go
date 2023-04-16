@@ -8,6 +8,8 @@ import (
 	"github.com/B-danik/SecondTopic/todo"
 )
 
+//go:generate mockgen -source=service.go -destination=mocks/mock.go
+
 type Authorization interface {
 	Create(user todo.User) (int, error)
 	GenerateToken(username, password string) (string, error)
