@@ -17,6 +17,7 @@ require (
 	github.com/stretchr/testify v1.8.2 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
+	github.com/zhashkevych/go-sqlxmock v1.5.1 // indirect
 	go.uber.org/atomic v1.4.0 // indirect
 	golang.org/x/arch v0.0.0-20190927153633-4e8777c89be4 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

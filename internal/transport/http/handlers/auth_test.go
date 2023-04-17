@@ -40,8 +40,8 @@ func TestHandler_signUp(t *testing.T) {
 				Email:    "xasxx@mail.ru",
 				Password: "123",
 			},
-			mockBehavior: func(r *mock_service.MockAuthorization, user todo.User) {
-				r.EXPECT().Create(user).Return(1, nil)
+			mockBehavior: func(s *mock_service.MockAuthorization, user todo.User) {
+				s.EXPECT().Create(user).Return(1, nil)
 			},
 			expectedStatusCode:  200,
 			expectedRequestBody: "{\"id\":1}\n",
@@ -55,8 +55,8 @@ func TestHandler_signUp(t *testing.T) {
 				Email:    "xxx@mail.ru",
 				Password: "123",
 			},
-			mockBehavior: func(r *mock_service.MockAuthorization, user todo.User) {
-				r.EXPECT().Create(user).Return(0, nil)
+			mockBehavior: func(s *mock_service.MockAuthorization, user todo.User) {
+				s.EXPECT().Create(user).Return(0, nil)
 			},
 			expectedStatusCode: http.StatusNotFound,
 		},
@@ -69,15 +69,15 @@ func TestHandler_signUp(t *testing.T) {
 				"Lastname": "Bay"
 			}`,
 			inputUser: todo.User{},
-			mockBehavior: func(r *mock_service.MockAuthorization, user todo.User) {
-				r.EXPECT().Create(user).Return(0, nil)
+			mockBehavior: func(s *mock_service.MockAuthorization, user todo.User) {
+				s.EXPECT().Create(user).Return(0, nil)
 			},
 			expectedStatusCode: 404,
 		},
 	}
 	for _, test := range testTable {
 		t.Run(test.name, func(t *testing.T) {
-			// Init Dependencies
+
 			c := gomock.NewController(t)
 			defer c.Finish()
 
@@ -87,19 +87,15 @@ func TestHandler_signUp(t *testing.T) {
 			services := &service.Service{Authorization: repo}
 			handler := Manager{services}
 
-			// Init Endpoint
 			r := echo.New()
 			r.POST("/sign-up", handler.SignUp)
 
-			// Create Request
 			w := httptest.NewRecorder()
 			req := httptest.NewRequest("POST", "/sign-up",
 				bytes.NewBufferString(test.inputBody))
 
-			// Make Request
 			r.ServeHTTP(w, req)
 
-			// Assert
 			assert.Equal(t, w.Code, test.expectedStatusCode)
 			assert.Equal(t, w.Body.String(), test.expectedRequestBody)
 		})
