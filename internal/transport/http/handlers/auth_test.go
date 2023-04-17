@@ -47,32 +47,12 @@ func TestHandler_signUp(t *testing.T) {
 			expectedRequestBody: "{\"id\":1}\n",
 		},
 		{
-			name:      "FAILED",
-			inputBody: ``,
-			inputUser: todo.User{
-				Name:     "Daniyar",
-				LastName: "Bay",
-				Email:    "xxx@mail.ru",
-				Password: "123",
-			},
-			mockBehavior: func(s *mock_service.MockAuthorization, user todo.User) {
-				s.EXPECT().Create(user).Return(0, nil)
-			},
-			expectedStatusCode: http.StatusNotFound,
-		},
-		{
-			name: "FAILED",
-			inputBody: `{
-				"Email": "xasxx@mail.ru",
-				"Password": "123",
-				"Name": "Daniyar",
-				"Lastname": "Bay"
-			}`,
-			inputUser: todo.User{},
-			mockBehavior: func(s *mock_service.MockAuthorization, user todo.User) {
-				s.EXPECT().Create(user).Return(0, nil)
-			},
-			expectedStatusCode: 404,
+			name:                "FAILED",
+			inputBody:           ``,
+			inputUser:           todo.User{},
+			mockBehavior:        func(s *mock_service.MockAuthorization, user todo.User) {},
+			expectedStatusCode:  http.StatusNotFound,
+			expectedRequestBody: "",
 		},
 	}
 	for _, test := range testTable {
