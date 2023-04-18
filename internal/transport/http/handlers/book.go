@@ -10,7 +10,6 @@ import (
 )
 
 func (m *Manager) CreateBook(c echo.Context) error {
-
 	var book todo.Book
 	b, err := ioutil.ReadAll(c.Request().Body)
 	if err != nil {

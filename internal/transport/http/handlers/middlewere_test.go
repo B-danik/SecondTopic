@@ -13,7 +13,7 @@ import (
 )
 
 func TestHandler_userIdentity(t *testing.T) {
-	type mockBehavior func(r *mock_service.MockAuthorization, token string)
+	type mockBehavior func(s *mock_service.MockAuthorization, token string)
 
 	testTable := []struct {
 		name                 string
@@ -29,8 +29,8 @@ func TestHandler_userIdentity(t *testing.T) {
 			headerName:  "Authorization",
 			headerValue: "Bearer token",
 			token:       "token",
-			mockBehavior: func(r *mock_service.MockAuthorization, token string) {
-				r.EXPECT().ParseToken(token).Return(1, nil)
+			mockBehavior: func(s *mock_service.MockAuthorization, token string) {
+				s.EXPECT().ParseToken(token).Return(1, nil)
 			},
 			expectedStatusCode:   200,
 			expectedResponseBody: "1\n",
@@ -91,15 +91,15 @@ func TestHandler_userIdentity(t *testing.T) {
 			r.Group("/identity", handler.UserIdentity)
 
 			// Init Test Request
-			w := httptest.NewRecorder()
+			http := httptest.NewRecorder()
 			req := httptest.NewRequest("GET", "/identity", nil)
 			req.Header.Set(test.headerName, test.headerValue)
 
-			r.ServeHTTP(w, req)
+			r.ServeHTTP(http, req)
 
 			// Asserts
-			assert.Equal(t, w.Code, test.expectedStatusCode)
-			assert.Equal(t, w.Body.String(), test.expectedResponseBody)
+			assert.Equal(t, http.Code, test.expectedStatusCode)
+			assert.Equal(t, http.Body.String(), test.expectedResponseBody)
 		})
 	}
 }

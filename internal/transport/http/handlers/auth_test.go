@@ -70,14 +70,14 @@ func TestHandler_signUp(t *testing.T) {
 			r := echo.New()
 			r.POST("/sign-up", handler.SignUp)
 
-			w := httptest.NewRecorder()
+			http := httptest.NewRecorder()
 			req := httptest.NewRequest("POST", "/sign-up",
 				bytes.NewBufferString(test.inputBody))
 
-			r.ServeHTTP(w, req)
+			r.ServeHTTP(http, req)
 
-			assert.Equal(t, w.Code, test.expectedStatusCode)
-			assert.Equal(t, w.Body.String(), test.expectedRequestBody)
+			assert.Equal(t, http.Code, test.expectedStatusCode)
+			assert.Equal(t, http.Body.String(), test.expectedRequestBody)
 		})
 	}
 }
