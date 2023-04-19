@@ -12,25 +12,27 @@ type IAuthorization interface {
 }
 
 type IBook interface {
-	Create(name string) (int, error)
+	Create(name string, price int) (int, error)
 	Get(ID int) (todo.Book, error)
-	GetAll() ([]todo.Book, error)
+	GetList() ([]todo.Book, error)
 	Delete(ID int) error
 }
 
-type ITransactions interface {
+type IRent interface {
+	GetRent(id int) ([]todo.Rent, error)
+	CraeteRent(user_id int, book_id int) error
 }
 
 type Repository struct {
 	Authorization IAuthorization
 	Book          IBook
-	Transactions  ITransactions
+	Rent          IRent
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: sql.NewAuthPostgres(db),
 		Book:          sql.NewBook(db),
-		Transactions:  sql.NewTransactions(db),
+		Rent:          sql.NewRent(db),
 	}
 }

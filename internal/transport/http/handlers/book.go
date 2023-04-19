@@ -20,7 +20,7 @@ func (m *Manager) CreateBook(c echo.Context) error {
 		return c.NoContent(http.StatusNotFound)
 	}
 
-	m.srv.Book.Create(book.Name)
+	m.srv.Book.Create(book.Name, book.Price)
 	if err != nil {
 		return c.NoContent(http.StatusNotFound)
 	}
@@ -52,9 +52,9 @@ func (m *Manager) GetBook(c echo.Context) error {
 	})
 }
 
-func (m *Manager) GetAll(c echo.Context) error {
+func (m *Manager) GetList(c echo.Context) error {
 
-	list, err := m.srv.Book.GetAll()
+	list, err := m.srv.Book.GetList()
 	if err != nil {
 		return c.NoContent(http.StatusNotFound)
 	}

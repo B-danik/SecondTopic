@@ -103,18 +103,18 @@ func (m *MockBook) EXPECT() *MockBookMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockBook) Create(name string) (int, error) {
+func (m *MockBook) Create(name string, price int) (int, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", name)
+	ret := m.ctrl.Call(m, "Create", name, price)
 	ret0, _ := ret[0].(int)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Create indicates an expected call of Create.
-func (mr *MockBookMockRecorder) Create(name interface{}) *gomock.Call {
+func (mr *MockBookMockRecorder) Create(name, price interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockBook)(nil).Create), name)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockBook)(nil).Create), name, price)
 }
 
 // Delete mocks base method.
@@ -146,40 +146,69 @@ func (mr *MockBookMockRecorder) Get(ID interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockBook)(nil).Get), ID)
 }
 
-// GetAll mocks base method.
-func (m *MockBook) GetAll() ([]todo.Book, error) {
+// GetList mocks base method.
+func (m *MockBook) GetList() ([]todo.Book, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAll")
+	ret := m.ctrl.Call(m, "GetList")
 	ret0, _ := ret[0].([]todo.Book)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetAll indicates an expected call of GetAll.
-func (mr *MockBookMockRecorder) GetAll() *gomock.Call {
+// GetList indicates an expected call of GetList.
+func (mr *MockBookMockRecorder) GetList() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAll", reflect.TypeOf((*MockBook)(nil).GetAll))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetList", reflect.TypeOf((*MockBook)(nil).GetList))
 }
 
-// MockTransactions is a mock of Transactions interface.
-type MockTransactions struct {
+// MockRent is a mock of Rent interface.
+type MockRent struct {
 	ctrl     *gomock.Controller
-	recorder *MockTransactionsMockRecorder
+	recorder *MockRentMockRecorder
 }
 
-// MockTransactionsMockRecorder is the mock recorder for MockTransactions.
-type MockTransactionsMockRecorder struct {
-	mock *MockTransactions
+// MockRentMockRecorder is the mock recorder for MockRent.
+type MockRentMockRecorder struct {
+	mock *MockRent
 }
 
-// NewMockTransactions creates a new mock instance.
-func NewMockTransactions(ctrl *gomock.Controller) *MockTransactions {
-	mock := &MockTransactions{ctrl: ctrl}
-	mock.recorder = &MockTransactionsMockRecorder{mock}
+// NewMockRent creates a new mock instance.
+func NewMockRent(ctrl *gomock.Controller) *MockRent {
+	mock := &MockRent{ctrl: ctrl}
+	mock.recorder = &MockRentMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockTransactions) EXPECT() *MockTransactionsMockRecorder {
+func (m *MockRent) EXPECT() *MockRentMockRecorder {
 	return m.recorder
+}
+
+// CraeteRent mocks base method.
+func (m *MockRent) CraeteRent(user_id, book_id int) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CraeteRent", user_id, book_id)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CraeteRent indicates an expected call of CraeteRent.
+func (mr *MockRentMockRecorder) CraeteRent(user_id, book_id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CraeteRent", reflect.TypeOf((*MockRent)(nil).CraeteRent), user_id, book_id)
+}
+
+// GetRent mocks base method.
+func (m *MockRent) GetRent(id int) ([]todo.Rent, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRent", id)
+	ret0, _ := ret[0].([]todo.Rent)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRent indicates an expected call of GetRent.
+func (mr *MockRentMockRecorder) GetRent(id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRent", reflect.TypeOf((*MockRent)(nil).GetRent), id)
 }

@@ -3,7 +3,7 @@ package service
 import (
 	repository "github.com/B-danik/SecondTopic/internal/database/postgre"
 	"github.com/B-danik/SecondTopic/pkg/book"
-	"github.com/B-danik/SecondTopic/pkg/transactions"
+	rent "github.com/B-danik/SecondTopic/pkg/rent"
 	users "github.com/B-danik/SecondTopic/pkg/users"
 	"github.com/B-danik/SecondTopic/todo"
 )
@@ -17,25 +17,27 @@ type Authorization interface {
 }
 
 type Book interface {
-	Create(name string) (int, error)
+	Create(name string, price int) (int, error)
 	Get(ID int) (todo.Book, error)
-	GetAll() ([]todo.Book, error)
+	GetList() ([]todo.Book, error)
 	Delete(ID int) error
 }
 
-type Transactions interface {
+type Rent interface {
+	GetRent(id int) ([]todo.Rent, error)
+	CraeteRent(user_id int, book_id int) error
 }
 
 type Service struct {
 	Authorization
 	Book
-	Transactions
+	Rent
 }
 
 func NewService(repo *repository.Repository) *Service {
 	return &Service{
 		Authorization: users.NewAuthService(repo.Authorization),
 		Book:          book.NewBook(repo.Book),
-		Transactions:  transactions.NewBook(repo.Transactions),
+		Rent:          rent.NewRent(repo.Rent),
 	}
 }

@@ -19,16 +19,11 @@ func NewBook(db *sqlx.DB) *Book {
 	return &Book{db: db}
 }
 
-type Book1 struct {
-	id   int
-	name string
-}
-
-func (b *Book) Create(name string) (int, error) {
+func (b *Book) Create(name string, price int) (int, error) {
 	var id int
-	query := fmt.Sprintf("INSERT INTO %s (name) values ($1) RETURNING id", bookTable)
+	query := fmt.Sprintf("INSERT INTO %s (name, price) values ($1, $2) RETURNING id", bookTable)
 
-	row := b.db.QueryRow(query, name)
+	row := b.db.QueryRow(query, name, price)
 	if err := row.Scan(&id); err != nil {
 		return 0, err
 	}
@@ -47,7 +42,7 @@ func (b *Book) Get(ID int) (todo.Book, error) {
 	return book, err
 }
 
-func (b *Book) GetAll() ([]todo.Book, error) {
+func (b *Book) GetList() ([]todo.Book, error) {
 
 	var book []todo.Book
 	query := fmt.Sprintf("Select * from %s", bookTable)

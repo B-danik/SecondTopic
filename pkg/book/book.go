@@ -13,8 +13,8 @@ func NewBook(repo repository.IBook) *BookService {
 	return &BookService{repo: repo}
 }
 
-func (b *BookService) Create(name string) (int, error) {
-	return b.repo.Create(name)
+func (b *BookService) Create(name string, price int) (int, error) {
+	return b.repo.Create(name, price)
 
 }
 
@@ -22,8 +22,8 @@ func (b *BookService) Get(ID int) (todo.Book, error) {
 	return b.repo.Get(ID)
 }
 
-func (b *BookService) GetAll() ([]todo.Book, error) {
-	return b.repo.GetAll()
+func (b *BookService) GetList() ([]todo.Book, error) {
+	return b.repo.GetList()
 }
 
 func (b *BookService) Delete(ID int) error {

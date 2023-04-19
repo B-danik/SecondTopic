@@ -14,13 +14,14 @@ func (s *Server) SetupRoutes() {
 		{
 			book.POST("/create", s.handler.CreateBook)
 			book.GET("/get-book", s.handler.GetBook)
-			book.GET("/get-all", s.handler.GetAll)
+			book.GET("/get-list", s.handler.GetList)
 			book.DELETE("/delete", s.handler.DeleteBook)
 		}
 
-		transactions := api.Group("/transactions")
+		rent := api.Group("/rent")
 		{
-			transactions.GET("/get", s.handler.GetTransactions)
+			rent.GET("/get", s.handler.GetRent)
+			rent.POST("/create", s.handler.CreateRent)
 		}
 	}
 }
