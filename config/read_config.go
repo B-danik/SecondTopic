@@ -1,5 +1,5 @@
 package config
-
+// название файла просто config
 import (
 	"log"
 

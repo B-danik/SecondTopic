@@ -1,4 +1,4 @@
-
+# где multi stage build ?
 FROM golang:1.14-buster
 
 RUN go version

@@ -7,7 +7,7 @@ import (
 
 	"github.com/B-danik/SecondTopic/todo"
 )
-
+// убрать из папки pg 
 type AuthPostgre struct {
 	db *sqlx.DB
 }

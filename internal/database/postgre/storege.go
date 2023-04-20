@@ -5,7 +5,8 @@ import (
 	"github.com/B-danik/SecondTopic/todo"
 	"github.com/jmoiron/sqlx"
 )
-
+// storege => storage
+// не database => storage or repository
 type IAuthorization interface {
 	Create(user todo.User) (int, error)
 	Get(email, password string) (todo.User, error)

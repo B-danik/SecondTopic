@@ -9,6 +9,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// убрать из папки connect
 func NewPostgresDB(cfg *config.Config) (*sqlx.DB, error) {
 	log.Println("Connect to database")
 	db, err := sqlx.Open("postgres", fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=%s",

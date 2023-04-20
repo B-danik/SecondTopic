@@ -8,7 +8,7 @@ import (
 type BookService struct {
 	repo repository.IBook
 }
-
+// должна быть папка internal/service а в ней файл book.go
 func NewBook(repo repository.IBook) *BookService {
 	return &BookService{repo: repo}
 }
